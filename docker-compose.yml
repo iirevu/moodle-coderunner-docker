@@ -10,7 +10,7 @@ services:
     volumes:
       - 'mariadb_data:/var/lib/mysql'
   moodle:
-    image: moodlehq/moodle-php-apache:8.3
+    build: moodle2docker/
 
     ports:
       - '8080:80'
