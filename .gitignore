@@ -1,1 +1,14 @@
 moodle
+.*.swp
+*.aux
+*.bcf
+*.blg
+*.log
+*.out
+*.run.xml
+.*.swp
+dist
+test
+code.py
+__pycache__
+test.*

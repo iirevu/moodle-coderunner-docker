@@ -27,7 +27,7 @@ services:
     depends_on:
       - mariadb
   jobe:
-    image: trampgeek/jobeinabox:latest
+    build: jobe/
 volumes:
   mariadb_data:
     driver: local
