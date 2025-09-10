@@ -10,15 +10,16 @@ services:
     volumes:
       - 'mariadb_data:/var/lib/mysql'
   moodle:
-    build: moodle-docker
+    build: moodle-docker/
     ports:
-      - '80:8080'
-      - '443:8443'
+      - '8080:8080'
+      - '8443:8443'
     environment:
       MOODLE_DATABASE_HOST: mariadb
       MOODLE_DATABASE_PORT_NUMBER: 3306
-      MOODLE_DATABASE_USER: bn_moodle
-      MOODLE_DATABASE_NAME: bitnami_moodle
+      MOODLE_DATABASE_USER: dbuser
+      MOODLE_DATABASE_PASSWORD: f00barF
+      MOODLE_DATABASE_NAME: moodle
       ALLOW_EMPTY_PASSWORD: yes
     volumes:
       - 'moodle_data:/bitnami/moodle'
