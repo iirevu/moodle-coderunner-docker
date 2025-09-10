@@ -13,3 +13,20 @@ features are used to pass student responses to the LLM.
 
 Under `jobe/ChatRunner` there is a python package to provide the
 API to call an LLM from CodeRunner.
+
+## Usage
+
+1.  Make sure you have git, docker, and docker-compose.
+2.  Run `sh gitclone.sh` to set up the moodle directory.
+3.  Run `docker compose up -d` to start the server.
+4.  Connect to http://localhost:8080/
+
+You will have to go through the setup procedure.
+In the database setup, you have to choose mariadb as
+the server type, and mariadb as the hostname.  The database
+user and password are found in the docker-compose.yml file.
+
+Moodle will complain that you are not using SSL (https).  
+It still works, and for testing and prototyping there is no
+need to worry.  For production, this has to change.
+
