@@ -1,13 +1,13 @@
-version: '2'
+
 services:
   mariadb:
     image: mariadb:latest
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=dbuser
-      - MARIADB_PASSWORD=f00barF
-      - MARIADB_ROOT_PASSWORD=f00barF
-      - MARIADB_DATABASE=moodle
+      ALLOW_EMPTY_PASSWORD: yes
+      MARIADB_USER: dbuser
+      MARIADB_PASSWORD: f00barF
+      MARIADB_ROOT_PASSWORD: f00barF
+      MARIADB_DATABASE: moodle
     volumes:
       - 'mariadb_data:/var/lib/mysql'
   moodle:
