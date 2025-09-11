@@ -61,15 +61,14 @@ def chatRequest(sandbox,prompt,ans):
     from sandbox, and the given prompt and student answer ans.
     The return value is that produced by requests.request().
     """
-    if "url" in sandbox:
-        openai_url = sandbox["url"]
-    else:
-        openai_url = "https://api.openai.com/v1/chat/completions"
+    if sandbox is None:
+        sandbox = {}
+    openai_url = sandbox.get("url", "https://api.openai.com/v1/chat/completions")
     headers = { "Content-Type": "application/json" }
     if 'OPENAI_API_KEY' in sandbox:
          headers["Authorization"] = f"Bearer {sandbox['OPENAI_API_KEY']}"
     data = { 
-             "model": sandbox['model'],
+             "model": sandbox.get( 'model', "gpt-4o" ),
              "format" : "json",
              "stream" : False,
              "messages": [ { "role": "assistant", "content": prompt },
@@ -466,6 +465,9 @@ def testProgram(problem,studans,literatur={},gs="",sandbox={},qid=0):
     In general, this function should be used to test the functionality 
     and the language models from the command line.
     """
+
+    if sandbox is None:
+        raise Exception( "No sandbox provided" )
 
     graderstate = getGraderstate(gs,studans)
     prompt = getPrompt(problem,literatur,gs)
