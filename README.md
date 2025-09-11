@@ -30,3 +30,11 @@ Moodle will complain that you are not using SSL (https).
 It still works, and for testing and prototyping there is no
 need to worry.  For production, this has to change.
 
+
+Moodle usually requires a cron job, but cron works poorly
+in docker containers.  The following command can be used to 
+```sh
+docker exec -it /usr/local/bin/php  /var/www/html/admin/cli/cron.php 
+```
+
+
