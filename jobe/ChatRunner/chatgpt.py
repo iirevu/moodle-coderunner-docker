@@ -14,7 +14,7 @@ graderstate_string = "{{ QUESTION.stepinfo.graderstate| json_encode | e('py')}}"
 
 literatur = json.loads( "{{ literatur | json_encode(constant('JSON_UNESCAPED_UNICODE')) | e('py') | e('py')}}")
 
-sandboxparams = json.loads("""{{ QUESTION.sandboxparams | json_encode | e('py') }}""")
+sandboxparams = json.loads("""{{ QUESTION.templateparams | json_encode | e('py') }}""")
 
 # Load the problem text
 with open('problem.md', 'r') as file:
