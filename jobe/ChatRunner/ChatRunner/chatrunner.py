@@ -323,7 +323,7 @@ class TestResults:
       self.testresults = self.testresults+merging_result.testresults
    def phtml(self):
        rl = [ test.formatResult() for test in self.testresults ]
-       return rl
+       return "\n".join( rl )
 
 def getfn(fn):
     dir = os.path.dirname(os.path.abspath(__file__))
@@ -413,7 +413,7 @@ def getGraderstate(gs,studans):
        graderstate = {"step": 0, "studans": [studans], "svar": []}
     return graderstate
 
-def runAnswer(problem,studans,literatur={},gs="",sandbox=None,qid=0,debug=False):
+def runAnswer(problem,studans,literatur={},gs="",sandbox=None,qid=0,debug=False,subproc=True):
     """
     Run the CodeGrader, with pre- and post-processing of data.
     """
