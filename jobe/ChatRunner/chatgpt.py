@@ -12,9 +12,12 @@ studansraw = """{{ STUDENT_ANSWER | raw }}"""
 
 graderstate_string = "{{ QUESTION.stepinfo.graderstate| json_encode | e('py')}}"
 
-literatur = json.loads( "{{ literatur | json_encode(constant('JSON_UNESCAPED_UNICODE')) | e('py') | e('py')}}")
-
-sandboxparams = json.loads("""{{ QUESTION.templateparams | json_encode | e('py') }}""")
+sandboxparams = {
+        "model" : "{{ model }}",
+        "API" : "{{ API }}",
+        "url" : "{{ url }}",
+        "OPENAI_API_KEY" : "{{ OPENAI_API_KEY }}"
+        }
 
 # Load the problem text
 with open('problem.md', 'r') as file:

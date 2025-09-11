@@ -127,7 +127,7 @@ class Test:
 
 
 class TestResults:
-   def __init__(self, output, exitCode=0, name=None):
+   def __init__(self, output, exitCode=0, name=None, debug=False):
       """
       output: Output fra testprogram
       exitCode: 0: OK, 1: Feil/kræsj, 2: timeout, -1: Ingen tester å kjøre, -2: Testnummer finnes ikke
@@ -155,6 +155,7 @@ class TestResults:
          else:
             self.other_output+= line+"\n"
       self.numTests = len(self.testresults)
+      self.debug = debug
 
    def finalise(self,debug=False):
       """
@@ -195,8 +196,9 @@ class TestResults:
       self.tableRemap = tableRemap
       i = 1
       for test in self.testresults:
-         print( f"> test {i}" )
-         print(test)
+         if self.debug:
+            print( f"> test {i}" )
+            print(test)
          i += 1
 
          row = []
@@ -206,7 +208,7 @@ class TestResults:
             except:
                row = []
                break
-         print( i, row )
+         if self.debug: print( i, row )
          if row != []:
             self.resultstable.append(row)
 
@@ -411,10 +413,14 @@ def getGraderstate(gs,studans):
        graderstate = {"step": 0, "studans": [studans], "svar": []}
     return graderstate
 
-def runAnswer(problem,studans,literatur={},gs="",sandbox={},qid=0,debug=False):
+def runAnswer(problem,studans,literatur={},gs="",sandbox=None,qid=0,debug=False):
     """
     Run the CodeGrader, with pre- and post-processing of data.
     """
+
+    if sandbox is None:
+        raise Exception( "No sandbox received by runAnswer." )
+
 
     graderstate = getGraderstate(gs,studans)
 
@@ -456,7 +462,7 @@ def runAnswer(problem,studans,literatur={},gs="",sandbox={},qid=0,debug=False):
           other_lines=True,
           graderstate=graderstate)
 
-def testProgram(problem,studans,literatur={},gs="",sandbox={},qid=0):
+def testProgram(problem,studans,literatur={},gs="",sandbox={},qid=0,debug=False):
     """
     This function is supposed to be functionally identical to
     `runAnswer()` without using the sandbox.  The code from 
@@ -476,14 +482,15 @@ def testProgram(problem,studans,literatur={},gs="",sandbox={},qid=0):
 
     svardata, testResults = dumpResponse( svar, svar_fetched )
 
-    print( "==== svardata ====" )
-    print(svardata)
+    if debug:
+       print( "==== svardata ====" )
+       print(svardata)
 
-    i = 1
-    for test in testResults:
-       print( f"==== test {i} ====" )
-       print(test)
-       i += 1
+       i = 1
+       for test in testResults:
+          print( f"==== test {i} ====" )
+          print(test)
+          i += 1
     output = svardata.dump() + "\n".join( [ x.dump() for x in testResults ] )
     testResults = TestResults(output)
     testResults.finalise()
