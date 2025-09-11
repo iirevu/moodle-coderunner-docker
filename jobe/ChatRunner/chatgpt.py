@@ -19,5 +19,7 @@ sandboxparams = json.loads("""{{ QUESTION.templateparams | json_encode | e('py')
 # Load the problem text
 with open('problem.md', 'r') as file:
     problem = file.read()
+with open('literature.json', 'r') as file:
+    literatur = json.load(file)
 
 print( runAnswer( problem, studans, literatur, graderstate_string, sandboxparams, qid ) )
