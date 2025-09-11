@@ -20,21 +20,47 @@ API to call an LLM from CodeRunner.
 2.  Run `sh gitclone.sh` to set up the moodle directory.
 3.  Run `docker compose up -d` to start the server.
 4.  Connect to http://localhost:8080/
+    + You will have to go through the setup procedure.
+      In the database setup, you have to choose mariadb as
+      the server type, and mariadb as the hostname.  The database
+      user and password are found in the docker-compose.yml file.
+    + Moodle will complain that you are not using SSL (https).  
+      It still works, and for testing and prototyping there is no
+      need to worry.  For production, this has to change.
+5.  Configure Site Administration -> Plugins -> CodeRunner.
+    Set Jobe server to «jobe».
+5.  Configure Site Administration -> General -> HTTP Security.
+    Prune the «cURL blocked hosts list».  It may suffice to remove
+    the 172.* addresses, but this may depend on the configuration of
+    docker.
+6.  Run `docker exec -it /usr/local/bin/php  /var/www/html/admin/cli/cron.php`
+    + Moodle usually requires a cron job, but cron works poorly in docker containers.  
+    + You may have to rerun the above command regularly, but the critical issue is
+      to run it once to have the question bank work.
+    + In production it should be run from cron.
 
-You will have to go through the setup procedure.
-In the database setup, you have to choose mariadb as
-the server type, and mariadb as the hostname.  The database
-user and password are found in the docker-compose.yml file.
 
-Moodle will complain that you are not using SSL (https).  
-It still works, and for testing and prototyping there is no
-need to worry.  For production, this has to change.
+## Sample Question
 
+To enter a sample question in CodeRunner, you can open a new question and make
+the following changes.  This assumes that you have an API key with OpenAI.
 
-Moodle usually requires a cron job, but cron works poorly
-in docker containers.  The following command can be used to 
-```sh
-docker exec -it /usr/local/bin/php  /var/www/html/admin/cli/cron.php 
+1. Under CodeRunner Question type -> Question Type, select Python3
+2. Enter the contents of file `jobe/ChatRunner/chatgpt.py` under Customisation -> Template
+3. Under Customisation -> Grading, select Template grader
+
+4. Enter the following under Advanced Customisation -> Sandbox -> Parameters:
 ```
+{ "API": "openai", "model": "gpt-4o", "url": "https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY": "<your key>" }
+```
+5. Under General, give the question a name and question text.  This does not matter
+   for testing.  You can use sampel question text from `Example/problem.md` and
+   «Mikroskopet» for question name.
+6. Under support files, add the files from the Example directory:
+   literature.json, problem.md, question.md
+7. Testing the question, you may use `Example/naiveanswer.md` as a dummy answer.
 
+Developing your own qestion, you change the files used in steps 5-7; everything else is
+constant.
 
+Using different language models, you change the sandbox parameters i Step 4.
