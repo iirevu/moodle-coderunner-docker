@@ -14,53 +14,6 @@ features are used to pass student responses to the LLM.
 Under `jobe/ChatRunner` there is a python package to provide the
 API to call an LLM from CodeRunner.
 
-## Testing and Developing ChatRunner
-
-To test ChatRunner without using Moodle, you should install it using pip.
-For instance, like this
-```sh
-python3 -m venv venv
-. venv/bin/activate
-pip install build
-cd jobe/ChatRunner
-pip install -e .
-```
-This installs in editable mode, so that you can keep developing and testing 
-the module.
-
-To test against OpenAI/ChatGPT, you have to get an API key, and edit
-the script (under jobe/ChatRunenr) to use this key before running,
-```sh
-sh chatgpttest.sh
-```
-
-### Using Ollama
-
-We have started experimenting using ollama, but this is still flaky
-and unstable.
-
-You can run ollama in docker, using
-```sh
-docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-docker exec -it ollama ollama pull llama3
-```
-This installs the llama3 model.  You can install other models as desired.
-
-If you want to test this as a chatbot, use,
-```sh
-docker exec -it ollama ollama run llama3
-```
-
-To test ChatRunner against ollama, you can run 
-```sh
-sh ollamatest.sh
-```
-
-The main problem with ollama, is that the models available are inferior
-to chatgpt and often produce syntactically unexpected output.  To make
-it work in practice, two things are required
-1.  Improved prompting to reduce the error frequency.
-2.  Improve error handling to manage the consequences of errors.
 
 
 ## Usage in Moodle
@@ -90,7 +43,7 @@ it work in practice, two things are required
     + In production it should be run from cron.
 
 
-## Sample Question
+### Sample Question
 
 To enter a sample question in CodeRunner, you can open a new question and make
 the following changes.  This assumes that you have an API key with OpenAI.
@@ -119,3 +72,58 @@ Developing your own qestion, you change the files used in steps 6-8; everything 
 constant.
 
 Using different language models, you change the sandbox parameters i Step 2.
+
+## Testing and Developing ChatRunner
+
+To test ChatRunner without using Moodle, you should install it using pip.
+For instance, like this
+```sh
+python3 -m venv venv
+. venv/bin/activate
+pip install build
+cd jobe/ChatRunner
+pip install -e .
+```
+This installs in editable mode, so that you can keep developing and testing 
+the module.
+
+To test against OpenAI/ChatGPT, you have to get an API key, and edit
+the script (under jobe/ChatRunenr) to use this key before running,
+```sh
+sh chatgpttest.sh
+```
+
+This is work in progress, and we have not yet been able to format the
+output, which is intended to be parsed by CodeRunner, so that it is
+readable for human users in the command line interface.
+It is possible to add the `-T` option to run outside the sandbox, which
+gives more debug information.
+
+
+### Using Ollama
+
+We have started experimenting using ollama, but this is still flaky
+and unstable.
+
+You can run ollama in docker, using
+```sh
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker exec -it ollama ollama pull llama3
+```
+This installs the llama3 model.  You can install other models as desired.
+
+If you want to test this as a chatbot, use,
+```sh
+docker exec -it ollama ollama run llama3
+```
+
+To test ChatRunner against ollama, you can run 
+```sh
+sh ollamatest.sh
+```
+
+The main problem with ollama, is that the models available are inferior
+to chatgpt and often produce syntactically unexpected output.  To make
+it work in practice, two things are required
+1.  Improved prompting to reduce the error frequency.
+2.  Improve error handling to manage the consequences of errors.
