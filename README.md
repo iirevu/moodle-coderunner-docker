@@ -66,7 +66,8 @@ it work in practice, two things are required
 ## Usage in Moodle
 
 1.  Make sure you have git, docker, and docker-compose.
-2.  Run `sh gitclone.sh` to set up the moodle directory.
+2.  Run `sh gitclone.sh` to clone the Moodle directory with
+    plugins required for CodeRunner.
 3.  Run `docker compose up -d` to start the server.
 4.  Connect to http://localhost:8080/
     + You will have to go through the setup procedure.
