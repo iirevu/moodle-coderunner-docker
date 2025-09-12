@@ -323,6 +323,7 @@ class TestResults:
       self.testresults = self.testresults+merging_result.testresults
    def phtml(self):
        rl = [ test.formatResult() for test in self.testresults ]
+       rl = [ x for x in rl if x is not None ]
        return "\n".join( rl )
 
 def getfn(fn):
